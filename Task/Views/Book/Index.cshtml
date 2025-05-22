@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BookDto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Books</h3>
+
+<table id="booksTable" class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Genre</th>
+            <th>Publish Date</th>
+            <th>Copies Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.AuthorName</td>
+                <td>@book.ISBN</td>
+                <td>@book.Genre</td>
+                <td>@book.PublishDate</td>
+                <td>@book.CopiesAvailable</td>
+                <td>
+                    <button><a asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a></button> |
+                    <button><a asp-controller="Book" asp-action="Delete" asp-route-AuthorId="@book.Id">Delete</a></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button><a asp-action="Add">Add</a></button>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#booksTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "pageLength": 10
+            });
+        });)
+    </script>
+}
