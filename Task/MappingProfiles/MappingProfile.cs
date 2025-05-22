@@ -11,7 +11,6 @@ namespace Task.MappingProfiles
         public MappingProfile()
         {
             CreateMap<Book, BookDto>()
-                .ForMember(b => b.Genre, opt => opt.MapFrom(b => b.Genre.Title))
                 .ForMember(b => b.AuthorName, opt => opt.MapFrom(b => b.Author.Name))
                 .ReverseMap();
             CreateMap<BookForManipulationDto, Book>();

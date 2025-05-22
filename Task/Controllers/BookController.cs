@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Contract;
 using Shared.DataTransferObjects.AuthorDtos;
 using Shared.DataTransferObjects.BookDtos;
+using System.Threading.Tasks;
 
 namespace Task.Controllers
 {
@@ -17,8 +19,15 @@ namespace Task.Controllers
             var allBooks = await _service.BookService.GetAllBooksAsync(false);
             return View(allBooks);
         }
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
+            var allAuthors = await _service.AuthorService.GetAllAuthorsAsync(trackChanges: false);
+            List<SelectListItem> AuthorsList = allAuthors.Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            }).ToList();
+            ViewData["authors"] = AuthorsList;
             return View();
         }
         [HttpPost]

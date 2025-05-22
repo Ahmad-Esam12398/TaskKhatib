@@ -10,7 +10,7 @@ namespace Shared.DataTransferObjects.BookDtos
         [Required(ErrorMessage = "Book Title Required")]
         public string Title { get; init; }
         [Required(ErrorMessage = "Book Genre Required")]
-        public Guid Genre { get; init; }
+        public string Genre { get; init; }
         [Required(ErrorMessage = "Book PublishDate Required")]
         public DateOnly PublishDate { get; init; }
         [Required(ErrorMessage = "Book CopiesAvailable Required")]

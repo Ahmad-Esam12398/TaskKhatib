@@ -21,14 +21,13 @@ namespace Repository
 
         public async Task<IEnumerable<Book>> GetAllBooksAsync(bool trackChanges)
         {
-            return await FindAll(trackChanges).Include(b => b.Author).Include(b => b.Genre)
+            return await FindAll(trackChanges).Include(b => b.Author)
                 .OrderBy(b => b.Title).ToListAsync();
         }
 
         public async Task<Book> GetBookAsync(Guid id, bool trackChanges)
         {
             return await FindByCondition(b => b.Id.Equals(id), trackChanges)
-                .Include(b => b.Genre)
                 .Include(b => b.Author)
                 .SingleOrDefaultAsync();
         }
