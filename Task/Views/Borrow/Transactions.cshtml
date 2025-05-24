@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TransactionDto>
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<h1>Transactions</h1>
+<table id="transactionsTable" class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            <tr>
+                <td>@transaction.bookTitle</td>
+                <td>@transaction.borrowDate</td>
+                <td>@transaction.returnDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index">Back</a>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+             mytable = $('#transactionsTable').DataTable({
+                "paging": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "pageLength": 10
+            });
+        });
+    </script>
+}
+

@@ -24,14 +24,14 @@
                 <td>@author.Bio</td>
                 <td>@author.DateOfBirth.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <button><a asp-controller="Author" asp-action="Edit" asp-route-id="@author.Id">Edit</a></button> |
-                    <button><a asp-controller="Author" asp-action="Delete" asp-route-AuthorId="@author.Id">Delete</a></button>
+                    <a asp-controller="Author" asp-action="Edit" asp-route-id="@author.Id">Edit</a> |
+                    <a asp-controller="Author" asp-action="Delete" asp-route-AuthorId="@author.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<button><a asp-action="Add">Add</a></button>
+<a asp-action="Add">Add</a>
 
 @section Scripts{
     <script>

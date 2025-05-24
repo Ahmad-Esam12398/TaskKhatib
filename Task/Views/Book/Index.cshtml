@@ -1,10 +1,20 @@
 ﻿@model IEnumerable<BookDto>
 @{
     ViewData["Title"] = "Index";
+    List<SelectListItem> AuthorSelectListItems = (List<SelectListItem>)ViewData["authors"];
+    List<SelectListItem> genreSelectListItems = (List<SelectListItem>)ViewData["genres"];
 }
 
 <h3>Books</h3>
 
+<input type="text" placeholder="Search by Author" id="authorSearch" />
+<input type="text" placeholder="Search by Genre" id="GenreSearch" />
+<select id="filterAuthor" asp-items="AuthorSelectListItems">
+    <option value="">-- Filter Author --</option>
+</select>
+<select id="filterGenre" asp-items="genreSelectListItems">
+    <option value="">-- Filter Genre --</option>
+</select>
 <table id="booksTable" class="table">
     <thead>
         <tr>
@@ -24,23 +34,23 @@
                 <td>@book.Title</td>
                 <td>@book.AuthorName</td>
                 <td>@book.ISBN</td>
-                <td>@book.Genre</td>
+                <td>@book.GenreTitle</td>
                 <td>@book.PublishDate</td>
                 <td>@book.CopiesAvailable</td>
                 <td>
-                    <button><a asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a></button> |
-                    <button><a asp-controller="Book" asp-action="Delete" asp-route-AuthorId="@book.Id">Delete</a></button>
+                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>|
+                    <a asp-controller="Book" asp-action="Delete" asp-route-AuthorId="@book.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<button><a asp-action="Add">Add</a></button>
+<a asp-action="Add">Add</a>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#booksTable').DataTable({
+             mytable = $('#booksTable').DataTable({
                 "paging": true,
                 "searching": true,
                 "ordering": true,
@@ -48,6 +58,27 @@
                 "lengthChange": true,
                 "pageLength": 10
             });
-        });)
+            $('#authorSearch').on('keyup change', function(){
+                var value = $(this).val().toLowerCase();
+                mytable.column(1).search(value).draw();
+            });
+            $('#GenreSearch').on('keyup change', function () {
+                mytable.column(3).search(this.value).draw();
+            });
+            $('#filterAuthor').on('change', function () {
+                var value = this.selectedOptions[0].text;
+                if(this.value === "") {
+                    value = ""; 
+                }
+                mytable.column(1).search(value).draw();
+            });
+            $('#filterGenre').on('change', function () {
+                var value = this.selectedOptions[0].text;
+                if(this.value === "") {
+                    value = "";
+                }
+                mytable.column(3).search(value).draw();
+            });
+        });
     </script>
 }

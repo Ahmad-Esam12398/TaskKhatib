@@ -1,0 +1,62 @@
+﻿@model IEnumerable<BookDto>
+@{
+    ViewData["Title"] = "Index";
+    List<SelectListItem> AuthorSelectListItems = (List<SelectListItem>)ViewData["authors"];
+    List<SelectListItem> genreSelectListItems = (List<SelectListItem>)ViewData["genres"];
+}
+
+<h1>Borrowing Service</h1>
+
+<table id="booksTable" class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Genre</th>
+            <th>Publish Date</th>
+            <th>Copies Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.AuthorName</td>
+                <td>@book.ISBN</td>
+                <td>@book.GenreTitle</td>
+                <td>@book.PublishDate</td>
+                <td>@book.CopiesAvailable</td>
+                <td>
+                    @if(book.CopiesAvailable > 0)
+                    {
+                        <a asp-controller="Borrow" asp-action="Borrow" asp-route-bookId="@book.Id">Borrow |</a> 
+                    }
+                    @if(book.CopiesBorrowed > 0)
+                    {
+                        <a asp-controller="Borrow" asp-action="Return" asp-route-bookId="@book.Id"> Return</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Transactions"> Transactions</a>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+             mytable = $('#booksTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "pageLength": 10
+            });
+        });
+    </script>
+}
+

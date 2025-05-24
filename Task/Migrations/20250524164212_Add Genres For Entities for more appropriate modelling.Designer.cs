@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Task.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250524164212_Add Genres For Entities for more appropriate modelling")]
+    partial class AddGenresForEntitiesformoreappropriatemodelling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +57,6 @@ namespace Task.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("CopiesAvailable")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CopiesBorrowed")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("GenreId")
@@ -124,28 +124,6 @@ namespace Task.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Transaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BorrowedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ReturnedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Transaction");
-                });
-
             modelBuilder.Entity("Entities.Models.Book", b =>
                 {
                     b.HasOne("Entities.Models.Author", "Author")
@@ -165,25 +143,9 @@ namespace Task.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Entities.Models.Transaction", b =>
-                {
-                    b.HasOne("Entities.Models.Book", "Book")
-                        .WithMany("Transactions")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("Entities.Models.Author", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("Entities.Models.Book", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Entities.Models.Genre", b =>

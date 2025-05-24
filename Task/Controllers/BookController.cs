@@ -16,6 +16,20 @@ namespace Task.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            var allAuthors = await _service.AuthorService.GetAllAuthorsAsync(trackChanges: false);
+            List<SelectListItem> AuthorsList = allAuthors.Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            }).ToList();
+            var AllGenres = await _service.GenreService.GetAllGenresAsync(trackChanges: false);
+            List<SelectListItem> GenresList = AllGenres.Select(g => new SelectListItem
+            {
+                Text = g.Title,
+                Value = g.Id.ToString()
+            }).ToList();
+            ViewData["authors"] = AuthorsList;
+            ViewData["genres"] = GenresList;
             var allBooks = await _service.BookService.GetAllBooksAsync(false);
             return View(allBooks);
         }
@@ -27,12 +41,23 @@ namespace Task.Controllers
                 Text = a.Name,
                 Value = a.Id.ToString()
             }).ToList();
+            var AllGenres = await _service.GenreService.GetAllGenresAsync(trackChanges: false);
+            List<SelectListItem> GenresList = AllGenres.Select(g => new SelectListItem
+            {
+                Text = g.Title,
+                Value = g.Id.ToString()
+            }).ToList();
             ViewData["authors"] = AuthorsList;
+            ViewData["genres"] = GenresList;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Add(BookForManipulationDto book)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
             await _service.BookService.CreateBookAsync(book);
             return RedirectToAction("Index");
         }
@@ -44,6 +69,10 @@ namespace Task.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(BookForManipulationDto book)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
             await _service.BookService.UpdateBookAsync(book.Id, book, trackChanges: true);
             return RedirectToAction("Index");
         }

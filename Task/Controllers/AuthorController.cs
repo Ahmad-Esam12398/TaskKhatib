@@ -24,6 +24,10 @@ namespace Task.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AuthorForManipulationDto author)
         {
+            if(!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
             await _service.AuthorService.CreateAuthorAsync(author);
             return RedirectToAction("Index");
         }
@@ -35,6 +39,10 @@ namespace Task.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AuthorForManipulationDto author)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
             await _service.AuthorService.UpdateAuthorAsync(author.Id, author, trackChanges: true);
             return RedirectToAction("Index");
         }

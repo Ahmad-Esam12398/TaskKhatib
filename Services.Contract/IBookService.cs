@@ -9,6 +9,7 @@ namespace Services.Contract
         Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges);
         Task<BookDto> GetBookAsync(Guid bookId, bool trackChanges);
         Task UpdateBookAsync(Guid bookId, BookForManipulationDto book, bool trackChanges);
-
+        Task BorrowBookAsync(Guid bookId, bool trackChanges);
+        Task ReturnBookAsync(Guid bookId, bool trackChanges);
     }
 }
